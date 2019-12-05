@@ -643,10 +643,10 @@ func FormatFileName(name string) string {
 	// Split the filepath name so that we use the
 	// file name (after the base) for ConfigMap,
 	// it shouldn't matter whether it has special characters or not
-	_, file := path.Split(name)
+	path, file := path.Split(name)
 
 	// Make it DNS-1123 compliant for Kubernetes
-	return strings.Replace(file, "_", "-", -1)
+	return path + strings.Replace(file, "_", "-", -1)
 }
 
 //FormatContainerName format Container name
