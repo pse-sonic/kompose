@@ -785,7 +785,12 @@ func (k *Kubernetes) ConfigHostPathVolumeSource(path string) (*api.VolumeSource,
 	if err != nil {
 		return nil, err
 	}
-	absPath := filepath.Join(dir, path)
+
+	absPath := path
+	if strings.HasPrefix(path, dir) == false {
+		absPath = filepath.Join(dir, path)
+	}
+
 	return &api.VolumeSource{
 		HostPath: &api.HostPathVolumeSource{Path: absPath},
 	}, nil
