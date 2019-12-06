@@ -156,7 +156,7 @@ func (k *Kubernetes) InitPodSpecWithConfigMap(name string, image string, service
 				api.VolumeMount{
 					Name:      tmpKey,
 					MountPath: FormatFileName(value.Target),
-					SubPath:   path.Base(FormatFileName(value.Target)),
+					SubPath:   FormatFileName(path.Base(value.Source)),
 				})
 
 			tmpVolume := api.Volume{
@@ -263,7 +263,7 @@ func (k *Kubernetes) InitConfigMapFromFile(name string, service kobject.ServiceC
 		log.Fatalf("Unable to retrieve file: %s", err)
 	}
 
-	originFileName := path.Base(FormatFileName(fileName))
+	originFileName := FormatFileName(path.Base(fileName))
 
 	dataMap := make(map[string]string)
 	dataMap[originFileName] = content
