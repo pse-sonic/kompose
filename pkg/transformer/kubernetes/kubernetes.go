@@ -156,7 +156,7 @@ func (k *Kubernetes) InitPodSpecWithConfigMap(name string, image string, service
 				api.VolumeMount{
 					Name:      tmpKey,
 					MountPath: FormatFileName(value.Target),
-					SubPath:   FormatFileName(path.Base(value.Source)),
+					SubPath:   FormatFileName(path.Base(value.Target)),
 				})
 
 			tmpVolume := api.Volume{
@@ -183,6 +183,15 @@ func (k *Kubernetes) InitPodSpecWithConfigMap(name string, image string, service
 		},
 		Volumes: volumes,
 	}
+
+	if service.ImagePullSecret != "" {
+		pod.ImagePullSecrets = []api.LocalObjectReference{
+			{
+				Name: service.ImagePullSecret,
+			},
+		}
+	}
+
 	return pod
 }
 

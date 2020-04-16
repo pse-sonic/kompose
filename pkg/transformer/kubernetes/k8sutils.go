@@ -390,6 +390,15 @@ func (k *Kubernetes) UpdateKubernetesObjects(name string, service kobject.Servic
 		template.Spec.Containers[0].Stdin = service.Stdin
 		template.Spec.Containers[0].TTY = service.Tty
 		template.Spec.Volumes = append(template.Spec.Volumes, volumes...)
+
+		if service.ImagePullSecret != "" {
+			template.Spec.ImagePullSecrets = []api.LocalObjectReference{
+				{
+					Name: service.ImagePullSecret,
+				},
+			}
+		}
+
 		template.Spec.NodeSelector = service.Placement
 		// Configure the HealthCheck
 		// We check to see if it's blank
